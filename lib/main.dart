@@ -65,13 +65,34 @@ class CardListState extends State<CardList> {
       itemBuilder: (context, i) {
         return Padding(
           padding: EdgeInsets.only(bottom: 16),
-          child: _renderCard(albumData[i]),
+          child: RCard(albumData[i]),
         );
       }
     );
   }
 
-  Widget _renderCard(album) {
+  
+}
+
+class RCard extends StatefulWidget {
+
+  final Map album;
+
+  RCard(this.album);
+
+  @override
+  CardState createState() => new CardState(album);
+}
+
+class CardState extends State<RCard> {
+
+  Map album;
+  bool showButton = true;
+
+  CardState(this.album);
+
+  @override
+  Widget build(BuildContext context) {
     return Card(
       clipBehavior: Clip.antiAlias,
       child:
@@ -95,7 +116,18 @@ class CardListState extends State<CardList> {
           Padding(
           padding: EdgeInsets.all(8.0),
           child: Image.network(album['image'], fit: BoxFit.cover),
-          )
+          ),
+          Padding(
+          padding: EdgeInsets.all(8.0),
+          child: showButton == true  ? RaisedButton(
+          onPressed: (){ setState(() {
+            showButton = false;
+            });         
+          },
+          color: Colors.lightBlue,
+          textColor: Colors.white,
+          child: const Text('Add to playlist')) : Text('Album added')
+          ),
         ],
       )
     );
